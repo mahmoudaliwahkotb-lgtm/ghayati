@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0C6B3E">
+<title>غايتي — نسخة حقيقية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1F2A4D;--soft:#5C6684;--faint:#8C93A8;--bg:#F4F6FA;--surface:#fff;
+  --line:#DDE2EC;--line2:#EEF1F7;--em:#12874F;--em-d:#0C6B3E;--em-s:#E3F3EA;--r:16px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;
+  font-size:15px;line-height:1.7}
+.wrap{max-width:520px;margin:0 auto;padding:0 14px 60px}
+header{background:var(--em-d);color:#fff;border-radius:0 0 22px 22px;padding:16px 18px;margin:0 -14px 16px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px}
+.logo{font-family:Amiri,serif;font-size:27px;font-weight:700;display:flex;align-items:center;gap:8px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:12px}
+h2{font-size:17px;margin:0 0 10px;font-weight:600}
+label{display:block;font-size:13px;color:var(--soft);margin:10px 0 5px}
+input,select,textarea{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px 12px;
+  font-family:inherit;font-size:15px;background:#fff;color:var(--ink)}
+textarea{min-height:70px;resize:vertical}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--em);outline-offset:2px}
+button{font-family:inherit;cursor:pointer}
+.btn{border:0;background:var(--em);color:#fff;font-weight:600;font-size:15px;padding:12px 18px;border-radius:12px}
+.btn.g{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500}
+.btn.wide{width:100%;margin-top:12px}
+.btn:disabled{background:#B9C3CF}
+.tabs{display:flex;gap:8px;margin-bottom:14px}
+.tabs button{flex:1;border:1px solid var(--line);background:#fff;border-radius:11px;padding:10px;font-size:14.5px;color:var(--soft)}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.msg{border-radius:11px;padding:11px 13px;font-size:14px;margin-top:12px;display:none}
+.msg.on{display:block}
+.msg.err{background:#FBECEC;color:#9B3B3B;border:1px solid #E2B4B4}
+.msg.ok{background:var(--em-s);color:var(--em-d);border:1px solid #A8D6BE}
+.kid{border:1px solid var(--line);border-radius:13px;padding:13px;margin-bottom:10px}
+.kid b{font-size:15.5px}
+.kid small{color:var(--faint);font-size:12.5px;display:block}
+.row{display:flex;gap:9px;flex-wrap:wrap;margin-top:10px}
+.ent{border-top:1px solid var(--line2);padding:9px 0;font-size:14px}
+.ent b{font-weight:600}
+.tiny{font-size:12.5px;color:var(--faint)}
+.pill{display:inline-block;font-size:11.5px;padding:3px 9px;border-radius:20px;background:var(--em-s);color:var(--em-d)}
+.pill.w{background:#FBECEC;color:#9B3B3B}
+.setup{background:#FFF8E8;border:1px solid #E8D6A8;border-radius:var(--r);padding:16px;margin-bottom:14px}
+.setup code{background:#fff;padding:2px 6px;border-radius:5px;font-size:13px}
+.hide{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="logo">
+    <svg viewBox="0 0 26 26" style="width:22px;height:22px"><path d="M5 21L19 7" stroke="#4FD08A" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M13.5 6.4h6.6v6.6" stroke="#4FD08A" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="3" width="4" height="4" rx="1.2" fill="#4FD08A"/></svg>
+    غايتي
+  </div>
+  <button class="btn g hide" id="outBtn" style="padding:8px 13px;font-size:13px" onclick="signOut()">خروج</button>
+</header>
+
+<!-- إعداد الاتصال -->
+<div class="setup hide" id="setup">
+  <b>خطوة واحدة قبل ما تبدأ</b>
+  <p style="margin:8px 0 0;font-size:14px">افتح مشروعك في Supabase ← <code>Project Settings</code> ← <code>API</code>، وانسخ الـ Project URL والـ <b>anon public</b> key.</p>
+  <label>Project URL</label>
+  <input id="sUrl" placeholder="https://xxxxxxxx.supabase.co" dir="ltr">
+  <label>anon public key</label>
+  <input id="sKey" placeholder="eyJhbGciOi..." dir="ltr">
+  <button class="btn wide" onclick="connect()">اتصل</button>
+  <p class="tiny" style="margin-top:10px">الـ anon key ده معمول عشان يتحط في المتصفح، مفيش مشكلة. <b>متحطش أبدًا الـ service_role key هنا</b> — ده بيتخطى كل الحماية.</p>
+  <p class="tiny">لما تتأكد إن كل حاجة شغالة، افتح الملف ده بمحرر نصوص وحط القيمتين في أول السكربت عشان ما تدخلهمش كل مرة.</p>
+</div>
+
+<!-- تسجيل الدخول -->
+<div class="hide" id="auth">
+  <div class="tabs">
+    <button id="tIn"  aria-pressed="true"  onclick="setMode('in')">تسجيل دخول</button>
+    <button id="tUp"  aria-pressed="false" onclick="setMode('up')">حساب جديد</button>
+  </div>
+  <div class="card">
+    <h2 id="authTitle">تسجيل دخول</h2>
+    <div id="upOnly" class="hide">
+      <label>الاسم</label><input id="fName" placeholder="محمود أحمد">
+      <label>أنا</label>
+      <select id="fRole"><option value="parent">ولي أمر</option><option value="teacher">معلّم</option></select>
+    </div>
+    <label>الإيميل</label><input id="fMail" type="email" dir="ltr" placeholder="you@example.com">
+    <label>كلمة السر</label><input id="fPass" type="password" dir="ltr" placeholder="٦ حروف على الأقل">
+    <button class="btn wide" id="authBtn" onclick="doAuth()">ادخل</button>
+    <div class="msg" id="authMsg"></div>
+  </div>
+  <p class="tiny">لو فعّلت تأكيد الإيميل في Supabase، هيوصلك لينك تأكيد قبل ما تقدر تدخل. للتجربة تقدر تقفله من Authentication ← Sign In / Providers.</p>
+</div>
+
+<!-- اللوحة -->
+<div class="hide" id="app">
+  <div class="card">
+    <h2 id="hello">أهلًا</h2>
+    <p class="tiny" style="margin:0" id="whoami"></p>
+  </div>
+
+  <!-- ولي أمر -->
+  <div class="hide" id="parentBox">
+    <div class="card">
+      <h2>ضيف طفل</h2>
+      <label>الاسم</label><input id="cName" placeholder="سلمى">
+      <label>سنة الميلاد</label><input id="cYear" type="number" placeholder="2018" dir="ltr">
+      <button class="btn wide" onclick="addChild()">حفظ</button>
+      <div class="msg" id="cMsg"></div>
+    </div>
+    <div class="card">
+      <h2>أولادي</h2>
+      <div id="kids"><p class="tiny">بيحمّل…</p></div>
+    </div>
+  </div>
+
+  <!-- معلّم -->
+  <div class="hide" id="teacherBox">
+    <div class="card">
+      <h2>طلابي</h2>
+      <p class="tiny">بتظهر هنا الأطفال اللي ولي أمرهم ربطهم بيك.</p>
+      <div id="studs"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>اختبار الأمان</h2>
+    <p style="margin:0 0 10px;font-size:14px">الزرار ده بيحاول يقرا كل الأطفال في قاعدة البيانات. المفروض يرجّعلك أولادك إنت بس.</p>
+    <button class="btn g" onclick="securityTest()">شغّل الاختبار</button>
+    <div class="msg" id="secMsg"></div>
+  </div>
+</div>
+
+<p class="tiny" style="text-align:center;margin-top:18px">غايتي — نسخة المرحلة الأولى. البيانات حقيقية ومحفوظة في Supabase.</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ============================================================
+   حط القيمتين دول هنا بعد ما تجربهم، وسيبهم فاضيين للتجربة الأولى
+   ============================================================ */
+const SUPABASE_URL = "https://wmtdfkyyuxqigqldabzt.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_OSgfBnUMVpEOhgYHEuUibA_j0CKefga";
+
+let sb=null, mode="in", me=null, profile=null;
+const $ = id => document.getElementById(id);
+const show = (id,on) => $(id).classList.toggle("hide", !on);
+function say(id,txt,ok){ const e=$(id); e.textContent=txt; e.className="msg on "+(ok?"ok":"err"); }
+function clearMsg(id){ $(id).className="msg"; }
+
+/* ---------- الاتصال ---------- */
+function boot(){
+  if(SUPABASE_URL && SUPABASE_ANON_KEY){ start(SUPABASE_URL, SUPABASE_ANON_KEY); }
+  else { show("setup",true); }
+}
+function connect(){
+  const u=$("sUrl").value.trim(), k=$("sKey").value.trim();
+  if(!u||!k){ alert("املا الخانتين"); return; }
+  if(k.length<60 && !k.startsWith("sb_")){ alert("المفتاح ده شكله مش صح — تأكد إنك ناسخ الـ anon public key"); return; }
+  show("setup",false); start(u,k);
+}
+function start(url,key){
+  sb = window.supabase.createClient(url,key);
+  sb.auth.onAuthStateChange((_e,session)=>{ me = session?.user || null; render(); });
+  sb.auth.getSession().then(({data})=>{ me=data.session?.user||null; render(); });
+}
+
+/* ---------- الدخول والتسجيل ---------- */
+function setMode(m){
+  mode=m;
+  $("tIn").setAttribute("aria-pressed", m==="in");
+  $("tUp").setAttribute("aria-pressed", m==="up");
+  $("authTitle").textContent = m==="in" ? "تسجيل دخول" : "حساب جديد";
+  $("authBtn").textContent  = m==="in" ? "ادخل" : "سجّل";
+  show("upOnly", m==="up");
+  clearMsg("authMsg");
+}
+async function doAuth(){
+  const email=$("fMail").value.trim(), password=$("fPass").value;
+  if(!email||!password){ say("authMsg","املا الإيميل وكلمة السر"); return; }
+  $("authBtn").disabled=true;
+  try{
+    if(mode==="up"){
+      const full_name=$("fName").value.trim()||"مستخدم جديد";
+      const role=$("fRole").value;
+      const {error} = await sb.auth.signUp({email,password,options:{data:{full_name,role}}});
+      if(error) throw error;
+      say("authMsg","اتسجّل. لو مطلوب تأكيد إيميل، افتح اللينك اللي وصلك وارجع سجّل دخول.",true);
+    } else {
+      const {error} = await sb.auth.signInWithPassword({email,password});
+      if(error) throw error;
+    }
+  }catch(e){ say("authMsg", trans(e.message)); }
+  $("authBtn").disabled=false;
+}
+function trans(m){
+  if(/Invalid login/i.test(m)) return "الإيميل أو كلمة السر غلط";
+  if(/already registered/i.test(m)) return "الإيميل ده مسجّل قبل كده";
+  if(/Password should be/i.test(m)) return "كلمة السر قصيرة — ٦ حروف على الأقل";
+  if(/Email not confirmed/i.test(m)) return "لازم تأكّد الإيميل الأول من اللينك اللي وصلك";
+  return m;
+}
+async function signOut(){ await sb.auth.signOut(); profile=null; }
+
+/* ---------- العرض ---------- */
+async function render(){
+  show("auth", !me); show("app", !!me); show("outBtn", !!me);
+  if(!me) return;
+  const {data,error} = await sb.from("profiles").select("*").eq("id",me.id).single();
+  if(error){ $("whoami").textContent="مش قادر أقرا الملف الشخصي: "+error.message; return; }
+  profile=data;
+  const roles={parent:"ولي أمر",teacher:"معلّم",admin:"إدارة"};
+  $("hello").textContent = "أهلًا "+profile.full_name;
+  $("whoami").textContent = roles[profile.role]+" · "+me.email;
+  show("parentBox", profile.role==="parent");
+  show("teacherBox", profile.role==="teacher");
+  if(profile.role==="parent") loadKids(); else loadStudents();
+}
+
+async function addChild(){
+  const name=$("cName").value.trim(), y=parseInt($("cYear").value)||null;
+  if(!name){ say("cMsg","اكتب اسم الطفل"); return; }
+  const {error} = await sb.from("children").insert({parent_id:me.id,name,birth_year:y});
+  if(error){ say("cMsg","مش قادر أحفظ: "+error.message); return; }
+  $("cName").value=""; $("cYear").value="";
+  say("cMsg","اتحفظ",true); loadKids();
+}
+
+async function loadKids(){
+  const {data,error} = await sb.from("children").select("*").order("created_at");
+  if(error){ $("kids").innerHTML=`<p class="tiny">خطأ: ${error.message}</p>`; return; }
+  if(!data.length){ $("kids").innerHTML=`<p class="tiny">مفيش أطفال مسجّلين لسه.</p>`; return; }
+  $("kids").innerHTML = data.map(k=>`
+    <div class="kid">
+      <b>${esc(k.name)}</b>
+      <small>${k.birth_year?"مواليد "+k.birth_year:"السن مش مسجّل"} · جزء ${k.current_juz??"—"}</small>
+      <div class="row">
+        <button class="btn g" style="padding:8px 12px;font-size:13px" onclick="loadEntries('${k.id}',this)">شوف التقدّم</button>
+        <button class="btn g" style="padding:8px 12px;font-size:13px" onclick="quickNote('${k.id}')">ضيف ملاحظة</button>
+      </div>
+      <div id="e-${k.id}"></div>
+    </div>`).join("");
+}
+async function loadEntries(id,btn){
+  const box=$("e-"+id);
+  const {data,error} = await sb.from("progress_entries").select("*")
+    .eq("child_id",id).order("entry_date",{ascending:false}).limit(10);
+  if(error){ box.innerHTML=`<p class="tiny">خطأ: ${error.message}</p>`; return; }
+  if(!data.length){ box.innerHTML=`<p class="tiny" style="margin-top:9px">مفيش تسجيلات لسه.</p>`; return; }
+  box.innerHTML = data.map(e=>`<div class="ent">
+     <b>${e.entry_date}</b> · ${esc(e.surah||"—")} ${e.juz?"· جزء "+e.juz:""}
+     <span class="pill ${e.attended?"":"w"}">${e.attended?"حضر":"غاب"}</span>
+     ${e.note?`<div class="tiny" style="margin-top:3px">${esc(e.note)}</div>`:""}</div>`).join("");
+  if(btn) btn.textContent="حدّث";
+}
+async function quickNote(id){
+  const surah=prompt("السورة؟"); if(surah===null) return;
+  const note=prompt("ملاحظة (اختياري)")||null;
+  const {error} = await sb.from("progress_entries").insert({child_id:id,surah,note,created_by:me.id});
+  if(error){ alert("مش قادر أحفظ: "+error.message); return; }
+  loadEntries(id);
+}
+async function loadStudents(){
+  const {data,error} = await sb.from("children").select("*");
+  if(error){ $("studs").innerHTML=`<p class="tiny">خطأ: ${error.message}</p>`; return; }
+  $("studs").innerHTML = data.length
+    ? data.map(k=>`<div class="kid"><b>${esc(k.name)}</b><small>جزء ${k.current_juz??"—"}</small>
+        <div class="row"><button class="btn g" style="padding:8px 12px;font-size:13px" onclick="loadEntries('${k.id}',this)">التقدّم</button>
+        <button class="btn g" style="padding:8px 12px;font-size:13px" onclick="quickNote('${k.id}')">سجّل حصة</button></div>
+        <div id="e-${k.id}"></div></div>`).join("")
+    : `<p class="tiny">مفيش طلاب مربوطين بيك لسه.</p>`;
+}
+
+async function securityTest(){
+  const {data,error} = await sb.from("children").select("id,name,parent_id");
+  if(error){ say("secMsg","خطأ: "+error.message); return; }
+  const mine=data.filter(d=>d.parent_id===me.id).length;
+  const others=data.length-mine;
+  if(others>0 && profile.role!=="admin"){
+    say("secMsg",`تحذير خطير: رجعلك ${others} طفل مش بتاعك. الحماية مش مظبوطة — راجع سياسات RLS قبل أي بيانات حقيقية.`);
+  } else {
+    say("secMsg",`سليم. رجعلك ${data.length} صف، كلهم بتوعك.`,true);
+  }
+}
+const esc = s => String(s).replace(/[<>&]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;"}[c]));
+
+boot();
+</script>
+</body>
+</html>
