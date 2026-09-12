@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>غايتي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#16233F;
+    --navy-light:#243459;
+    --green:#2F8F5B;
+    --green-dark:#237048;
+    --paper:#FBFAF6;
+    --surface:#FFFFFF;
+    --ink:#1B2230;
+    --muted:#6B7280;
+    --line:#E7E3D8;
+    --danger:#B3492E;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Tajawal', sans-serif;
+    min-height:100vh;
+  }
+  h1,h2,h3,.brand,button{font-family:'Almarai', sans-serif;}
+  #app{max-width:640px;margin:0 auto;min-height:100vh;background:var(--surface);
+    border-right:1px solid var(--line);border-left:1px solid var(--line);}
+
+  /* ---------- header ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:10;
+    background:var(--surface);
+    border-bottom:1px solid var(--line);
+    padding:14px 20px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .brand{font-size:22px;font-weight:800;color:var(--navy);}
+  .brand span{color:var(--green);}
+  .logout-btn{background:none;border:none;color:var(--muted);font-size:14px;cursor:pointer;font-family:'Tajawal';}
+  .logout-btn:hover{color:var(--danger);}
+
+  /* ---------- nav tabs ---------- */
+  .tabs{display:flex;border-bottom:1px solid var(--line);overflow-x:auto;}
+  .tab{
+    flex:1;text-align:center;padding:14px 8px;font-size:14.5px;font-weight:700;
+    color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;
+  }
+  .tab.active{color:var(--navy);border-bottom-color:var(--green);}
+
+  .view{padding:20px;}
+  .view h2{font-size:19px;margin:0 0 16px;color:var(--navy);}
+
+  /* ---------- auth screen ---------- */
+  .auth-wrap{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:32px 24px;}
+  .auth-logo{text-align:center;margin-bottom:6px;font-size:30px;font-weight:800;color:var(--navy);}
+  .auth-logo span{color:var(--green);}
+  .auth-sub{text-align:center;color:var(--muted);margin-bottom:32px;font-size:15px;}
+  .role-pick{display:flex;gap:10px;margin-bottom:18px;}
+  .role-btn{
+    flex:1;padding:14px 8px;border:1.5px solid var(--line);border-radius:10px;
+    background:var(--surface);cursor:pointer;text-align:center;font-family:'Almarai';font-weight:700;
+    color:var(--muted);font-size:14.5px;
+  }
+  .role-btn.selected{border-color:var(--green);color:var(--green-dark);background:#F1F8F4;}
+  label{display:block;font-size:13.5px;color:var(--muted);margin:14px 0 6px;font-weight:500;}
+  input, textarea, select{
+    width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;
+    font-family:'Tajawal';font-size:15px;color:var(--ink);background:var(--surface);
+  }
+  input:focus, textarea:focus, select:focus{outline:none;border-color:var(--navy);}
+  .btn{
+    display:block;width:100%;padding:13px;border:none;border-radius:10px;
+    font-family:'Almarai';font-weight:700;font-size:15.5px;cursor:pointer;margin-top:18px;
+  }
+  .btn-primary{background:var(--green);color:#fff;}
+  .btn-primary:hover{background:var(--green-dark);}
+  .btn-outline{background:none;border:1.5px solid var(--navy);color:var(--navy);}
+  .btn-outline:hover{background:var(--navy);color:#fff;}
+  .btn-small{width:auto;padding:8px 16px;font-size:13.5px;margin-top:0;}
+  .switch-mode{text-align:center;margin-top:20px;font-size:14px;color:var(--muted);}
+  .switch-mode a{color:var(--green-dark);cursor:pointer;font-weight:700;}
+  .err{background:#FDEDE9;color:var(--danger);padding:10px 14px;border-radius:8px;font-size:13.5px;margin-top:14px;}
+  .msg-ok{background:#EAF6EE;color:var(--green-dark);padding:10px 14px;border-radius:8px;font-size:13.5px;margin-top:14px;}
+
+  /* ---------- feed / posts ---------- */
+  .composer{border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:6px;}
+  .composer textarea{resize:none;min-height:70px;}
+  .post{padding:16px 0;border-bottom:1px solid var(--line);}
+  .post-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+  .avatar{
+    width:38px;height:38px;border-radius:50%;background:var(--navy);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0;
+  }
+  .post-name{font-weight:700;font-size:14.5px;color:var(--ink);}
+  .post-role{font-size:12.5px;color:var(--muted);}
+  .post-body{font-size:15px;line-height:1.8;color:var(--ink);}
+  .post-pending{display:inline-block;margin-top:8px;font-size:12px;color:#946B2A;background:#FDF3E3;padding:3px 10px;border-radius:20px;}
+  .empty{text-align:center;color:var(--muted);padding:50px 20px;font-size:14.5px;line-height:1.9;}
+
+  /* ---------- teacher cards ---------- */
+  .t-card{border-bottom:1px solid var(--line);padding:18px 0;}
+  .t-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .t-name{font-weight:700;font-size:16px;color:var(--ink);}
+  .t-spec{color:var(--muted);font-size:13.5px;margin-top:2px;}
+  .verified{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--green-dark);font-weight:700;margin-top:6px;}
+  .not-verified{font-size:12px;color:var(--muted);margin-top:6px;}
+  .t-price{font-weight:800;color:var(--navy);font-size:15px;white-space:nowrap;}
+  .t-bio{font-size:14px;color:var(--ink);margin-top:10px;line-height:1.75;}
+  .book-box{background:#F7F5EF;border-radius:10px;padding:14px;margin-top:14px;}
+
+  /* ---------- children / requests ---------- */
+  .child-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);}
+  .child-name{font-weight:700;font-size:15px;}
+  .child-meta{font-size:13px;color:var(--muted);margin-top:2px;}
+  .req-row{padding:14px 0;border-bottom:1px solid var(--line);}
+  .req-top{display:flex;justify-content:space-between;align-items:center;}
+  .status-pill{font-size:12px;padding:3px 12px;border-radius:20px;font-weight:700;}
+  .status-pending{background:#FDF3E3;color:#946B2A;}
+  .status-accepted{background:#EAF6EE;color:var(--green-dark);}
+  .status-declined{background:#FDEDE9;color:var(--danger);}
+  .req-actions{display:flex;gap:8px;margin-top:10px;}
+  .req-actions button{flex:1;}
+
+  .loading{text-align:center;padding:60px 20px;color:var(--muted);}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ============================================================
+   إعداد الاتصال بقاعدة البيانات
+   ============================================================ */
+const SUPABASE_URL = "https://wmtdfkyyuxqigqldabzt.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtdGRma3l5dXhxaWdxbGRhYnp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkxNTIwNDMsImV4cCI6MjEwNDcyODA0M30.Xo--JumcGs75J7T7QZFFSC58YSecDx7SLVvCnokZkU8";
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/* ============================================================
+   الحالة العامة للتطبيق
+   ============================================================ */
+let state = {
+  user: null,
+  profile: null,
+  view: "community",
+  authMode: "login",   // login | signup
+  authRole: "parent",  // parent | teacher
+  loading: true,
+  error: "",
+};
+
+const app = document.getElementById("app");
+
+function setState(patch){ state = {...state, ...patch}; render(); }
+function initials(name){ return (name || "؟").trim().charAt(0); }
+function esc(s){ const d=document.createElement("div"); d.textContent = s||""; return d.innerHTML; }
+
+/* ============================================================
+   بدء التشغيل — التأكد هل المستخدم مسجّل دخول بالفعل
+   ============================================================ */
+async function init(){
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    await loadProfile(session.user);
+  } else {
+    setState({ loading:false });
+  }
+}
+
+async function loadProfile(user){
+  const { data, error } = await sb.from("profiles").select("*").eq("id", user.id).single();
+  if (error) {
+    setState({ user, profile:null, loading:false, error:"تعذّر تحميل بيانات حسابك، حاول تسجيل الدخول من جديد." });
+    return;
+  }
+  setState({ user, profile:data, loading:false, view:"community" });
+}
+
+sb.auth.onAuthStateChange((event) => {
+  if (event === "SIGNED_OUT") setState({ user:null, profile:null, view:"community" });
+});
+
+/* ============================================================
+   التسجيل والدخول
+   ============================================================ */
+async function handleSignup(e){
+  e.preventDefault();
+  const full_name = document.getElementById("f-name").value.trim();
+  const phone = document.getElementById("f-phone").value.trim();
+  const email = document.getElementById("f-email").value.trim();
+  const password = document.getElementById("f-password").value;
+
+  if(!full_name || !email || !password){
+    setState({ error:"من فضلك املأ كل الحقول." }); return;
+  }
+  setState({ error:"", loading:true });
+
+  const { data, error } = await sb.auth.signUp({
+    email, password,
+    options:{ data:{ full_name, role: state.authRole, phone } }
+  });
+
+  if (error){
+    setState({ loading:false, error: translateError(error.message) });
+    return;
+  }
+  if (data.user && data.session){
+    await loadProfile(data.user);
+  } else {
+    setState({ loading:false, error:"", authMode:"login" });
+    alert("تم إنشاء الحساب. تحقق من بريدك الإلكتروني لتأكيد التسجيل، ثم سجّل الدخول.");
+  }
+}
+
+async function handleLogin(e){
+  e.preventDefault();
+  const email = document.getElementById("l-email").value.trim();
+  const password = document.getElementById("l-password").value;
+  setState({ error:"", loading:true });
+
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+  if (error){
+    setState({ loading:false, error: translateError(error.message) });
+    return;
+  }
+  await loadProfile(data.user);
+}
+
+async function handleLogout(){
+  await sb.auth.signOut();
+  setState({ user:null, profile:null });
+}
+
+function translateError(msg){
+  if (msg.includes("Invalid login credentials")) return "البريد الإلكتروني أو كلمة السر غير صحيحة.";
+  if (msg.includes("already registered")) return "البريد الإلكتروني ده مسجّل من قبل.";
+  if (msg.includes("Password should be")) return "كلمة السر لازم تكون 6 أحرف على الأقل.";
+  return "حصل خطأ: " + msg;
+}
+
+/* ============================================================
+   العرض الرئيسي — auth أو التطبيق
+   ============================================================ */
+function render(){
+  if (state.loading){
+    app.innerHTML = `<div class="loading">لحظة...</div>`;
+    return;
+  }
+  if (!state.user){
+    renderAuth();
+  } else {
+    renderApp();
+  }
+}
+
+/* ---------------- شاشة الدخول والتسجيل ---------------- */
+function renderAuth(){
+  app.innerHTML = `
+    <div class="auth-wrap">
+      <div class="auth-logo">غاي<span>تي</span></div>
+      <div class="auth-sub">سوق تعليمي للأطفال — معلّمون موثّقون وعائلات تتابع تقدّم أولادها</div>
+
+      ${state.authMode === "login" ? `
+        <form id="login-form">
+          <label>البريد الإلكتروني</label>
+          <input type="email" id="l-email" required>
+          <label>كلمة السر</label>
+          <input type="password" id="l-password" required>
+          ${state.error ? `<div class="err">${esc(state.error)}</div>` : ""}
+          <button class="btn btn-primary" type="submit">دخول</button>
+        </form>
+        <div class="switch-mode">مفيش حساب؟ <a id="to-signup">أنشئ حساب جديد</a></div>
+      ` : `
+        <form id="signup-form">
+          <label>أنا</label>
+          <div class="role-pick">
+            <div class="role-btn ${state.authRole==='parent'?'selected':''}" data-role="parent">ولي أمر</div>
+            <div class="role-btn ${state.authRole==='teacher'?'selected':''}" data-role="teacher">معلّم</div>
+          </div>
+          <label>الاسم الكامل</label>
+          <input type="text" id="f-name" required>
+          <label>رقم الهاتف</label>
+          <input type="tel" id="f-phone" placeholder="اختياري">
+          <label>البريد الإلكتروني</label>
+          <input type="email" id="f-email" required>
+          <label>كلمة السر</label>
+          <input type="password" id="f-password" required minlength="6">
+          ${state.error ? `<div class="err">${esc(state.error)}</div>` : ""}
+          <button class="btn btn-primary" type="submit">إنشاء الحساب</button>
+        </form>
+        <div class="switch-mode">عندك حساب؟ <a id="to-login">سجّل الدخول</a></div>
+      `}
+    </div>
+  `;
+
+  if (state.authMode === "login"){
+    document.getElementById("login-form").addEventListener("submit", handleLogin);
+    document.getElementById("to-signup").addEventListener("click", ()=>setState({authMode:"signup", error:""}));
+  } else {
+    document.getElementById("signup-form").addEventListener("submit", handleSignup);
+    document.getElementById("to-login").addEventListener("click", ()=>setState({authMode:"login", error:""}));
+    document.querySelectorAll(".role-btn").forEach(btn=>{
+      btn.addEventListener("click", ()=> setState({ authRole: btn.dataset.role }));
+    });
+  }
+}
+
+/* ---------------- هيكل التطبيق بعد الدخول ---------------- */
+function renderApp(){
+  const role = state.profile.role;
+  const tabsForRole = role === "teacher"
+    ? [["community","المجتمع"], ["myprofile","ملفي"], ["myrequests","طلبات الحجز"]]
+    : [["community","المجتمع"], ["teachers","المعلّمون"], ["children","أولادي"], ["myrequests","طلباتي"]];
+
+  app.innerHTML = `
+    <div class="topbar">
+      <div class="brand">غاي<span>تي</span></div>
+      <button class="logout-btn" id="logout-btn">${esc(state.profile.full_name)} · خروج</button>
+    </div>
+    <div class="tabs">
+      ${tabsForRole.map(([key,label])=>`<div class="tab ${state.view===key?'active':''}" data-view="${key}">${label}</div>`).join("")}
+    </div>
+    <div class="view" id="view-body"><div class="loading">لحظة...</div></div>
+  `;
+
+  document.getElementById("logout-btn").addEventListener("click", handleLogout);
+  document.querySelectorAll(".tab").forEach(t=>{
+    t.addEventListener("click", ()=> setState({ view: t.dataset.view }));
+  });
+
+  const body = document.getElementById("view-body");
+  if (state.view === "community") renderCommunity(body);
+  else if (state.view === "teachers") renderTeachersBrowse(body);
+  else if (state.view === "children") renderChildren(body);
+  else if (state.view === "myprofile") renderMyTeacherProfile(body);
+  else if (state.view === "myrequests") renderMyRequests(body);
+}
+
+/* ============================================================
+   المجتمع — المنشورات
+   ============================================================ */
+async function renderCommunity(body){
+  const { data: posts, error } = await sb
+    .from("posts")
+    .select("id, body, status, created_at, author_id, profiles(full_name, role)")
+    .order("created_at", { ascending:false })
+    .limit(50);
+
+  const listHtml = (error)
+    ? `<div class="err">تعذّر تحميل المنشورات.</div>`
+    : (!posts || posts.length===0)
+      ? `<div class="empty">لسه مفيش منشورات.<br>كن أول من يشارك شيء مع المجتمع.</div>`
+      : posts.map(p => `
+          <div class="post">
+            <div class="post-head">
+              <div class="avatar">${esc(initials(p.profiles?.full_name))}</div>
+              <div>
+                <div class="post-name">${esc(p.profiles?.full_name || "مستخدم")}</div>
+                <div class="post-role">${p.profiles?.role === 'teacher' ? 'معلّم' : 'ولي أمر'}</div>
+              </div>
+            </div>
+            <div class="post-body">${esc(p.body)}</div>
+            ${p.status === 'pending' && p.author_id === state.user.id ? `<div class="post-pending">بانتظار المراجعة — يظهر لك أنت فقط الآن</div>` : ""}
+          </div>
+        `).join("");
+
+  body.innerHTML = `
+    <div class="composer">
+      <textarea id="post-text" placeholder="شارك شيء مع المجتمع..."></textarea>
+      <button class="btn btn-primary" id="post-submit" style="width:auto;padding:10px 22px;float:left;">نشر</button>
+      <div style="clear:both;"></div>
+    </div>
+    <div id="post-err"></div>
+    ${listHtml}
+  `;
+
+  document.getElementById("post-submit").addEventListener("click", async ()=>{
+    const text = document.getElementById("post-text").value.trim();
+    if(!text) return;
+    const { error } = await sb.from("posts").insert({ author_id: state.user.id, body: text });
+    if (error){
+      document.getElementById("post-err").innerHTML = `<div class="err">تعذّر النشر، حاول تاني.</div>`;
+      return;
+    }
+    renderCommunity(body);
+  });
+}
+
+/* ============================================================
+   تصفح المعلّمين + الحجز (لولي الأمر)
+   ============================================================ */
+async function renderTeachersBrowse(body){
+  const { data: teachers, error } = await sb
+    .from("teachers")
+    .select("id, specialty, bio, price_egp, verified, profiles(full_name)")
+    .order("verified", { ascending:false });
+
+  const { data: children } = await sb.from("children").select("id, name").eq("parent_id", state.user.id);
+
+  if (error || !teachers){
+    body.innerHTML = `<div class="err">تعذّر تحميل قائمة المعلّمين.</div>`;
+    return;
+  }
+  if (teachers.length === 0){
+    body.innerHTML = `<div class="empty">لسه مفيش معلّمين مسجّلين.</div>`;
+    return;
+  }
+
+  body.innerHTML = teachers.map(t => `
+    <div class="t-card" data-tid="${t.id}">
+      <div class="t-top">
+        <div>
+          <div class="t-name">${esc(t.profiles?.full_name || "معلّم")}</div>
+          <div class="t-spec">${esc(t.specialty || "بدون تخصص محدد")}</div>
+          ${t.verified ? `<div class="verified">✓ معلّم موثّق</div>` : `<div class="not-verified">قيد التوثيق</div>`}
+        </div>
+        <div class="t-price">${t.price_egp ? t.price_egp + " ج.م" : "—"}</div>
+      </div>
+      ${t.bio ? `<div class="t-bio">${esc(t.bio)}</div>` : ""}
+      <button class="btn btn-outline btn-small" style="margin-top:12px;" data-open-book="${t.id}">اطلب حجز</button>
+      <div class="book-box" id="book-${t.id}" style="display:none;">
+        ${(!children || children.length===0) ? `
+          <div style="font-size:13.5px;color:var(--muted);">محتاج تضيف طفل الأول من تبويب «أولادي» قبل ما تحجز.</div>
+        ` : `
+          <label style="margin-top:0;">لمين الحجز؟</label>
+          <select id="book-child-${t.id}">
+            ${children.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join("")}
+          </select>
+          <label>رسالة قصيرة (اختياري)</label>
+          <textarea id="book-msg-${t.id}" style="min-height:50px;"></textarea>
+          <button class="btn btn-primary btn-small" style="margin-top:12px;" data-send-book="${t.id}">إرسال الطلب</button>
+          <div id="book-result-${t.id}"></div>
+        `}
+      </div>
+    </div>
+  `).join("");
+
+  document.querySelectorAll("[data-open-book]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const box = document.getElementById("book-"+btn.dataset.openBook);
+      box.style.display = box.style.display === "none" ? "block" : "none";
+    });
+  });
+
+  document.querySelectorAll("[data-send-book]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const tid = btn.dataset.sendBook;
+      const child_id = document.getElementById(`book-child-${tid}`).value;
+      const message = document.getElementById(`book-msg-${tid}`).value.trim();
+      const { error } = await sb.from("booking_requests").insert({
+        parent_id: state.user.id, teacher_id: tid, child_id, message
+      });
+      const resBox = document.getElementById(`book-result-${tid}`);
+      resBox.innerHTML = error
+        ? `<div class="err">تعذّر إرسال الطلب.</div>`
+        : `<div class="msg-ok">تم إرسال طلبك، تابعه من تبويب «طلباتي».</div>`;
+    });
+  });
+}
+
+/* ============================================================
+   أولادي (ولي الأمر)
+   ============================================================ */
+async function renderChildren(body){
+  const { data: children, error } = await sb
+    .from("children")
+    .select("id, name, birth_year, current_juz")
+    .eq("parent_id", state.user.id)
+    .order("created_at", { ascending:false });
+
+  const listHtml = (error)
+    ? `<div class="err">تعذّر تحميل بيانات الأطفال.</div>`
+    : (!children || children.length===0)
+      ? `<div class="empty">لسه ماضفتش أي طفل.</div>`
+      : children.map(c => `
+          <div class="child-row">
+            <div>
+              <div class="child-name">${esc(c.name)}</div>
+              <div class="child-meta">${c.birth_year ? "مواليد " + c.birth_year : ""}${c.current_juz ? " · الجزء " + c.current_juz : ""}</div>
+            </div>
+          </div>
+        `).join("");
+
+  body.innerHTML = `
+    <div class="composer">
+      <label style="margin-top:0;">اسم الطفل</label>
+      <input type="text" id="c-name">
+      <label>سنة الميلاد</label>
+      <input type="number" id="c-year" placeholder="مثال: 2018">
+      <button class="btn btn-primary" id="c-submit">إضافة</button>
+      <div id="c-err"></div>
+    </div>
+    ${listHtml}
+  `;
+
+  document.getElementById("c-submit").addEventListener("click", async ()=>{
+    const name = document.getElementById("c-name").value.trim();
+    const birth_year = document.getElementById("c-year").value || null;
+    if(!name){ return; }
+    const { error } = await sb.from("children").insert({ parent_id: state.user.id, name, birth_year });
+    if (error){
+      document.getElementById("c-err").innerHTML = `<div class="err">تعذّر الإضافة.</div>`;
+      return;
+    }
+    renderChildren(body);
+  });
+}
+
+/* ============================================================
+   ملفي (المعلّم)
+   ============================================================ */
+async function renderMyTeacherProfile(body){
+  const { data: t, error } = await sb.from("teachers").select("*").eq("id", state.user.id).single();
+
+  body.innerHTML = `
+    <div class="composer" style="border-bottom:none;">
+      ${t?.verified ? `<div class="verified" style="margin-bottom:14px;">✓ ملفك موثّق ويظهر للأهالي</div>` : `<div class="not-verified" style="margin-bottom:14px;">ملفك قيد التوثيق من الإدارة</div>`}
+      <label style="margin-top:0;">التخصص</label>
+      <input type="text" id="t-spec" value="${esc(t?.specialty || "")}" placeholder="مثال: تحفيظ وتجويد">
+      <label>نبذة عنك</label>
+      <textarea id="t-bio" style="min-height:100px;" placeholder="خبرتك، أسلوبك في التدريس...">${esc(t?.bio || "")}</textarea>
+      <label>السعر لكل جلسة (بالجنيه)</label>
+      <input type="number" id="t-price" value="${t?.price_egp || ""}">
+      <button class="btn btn-primary" id="t-save">حفظ الملف</button>
+      <div id="t-result"></div>
+    </div>
+  `;
+
+  document.getElementById("t-save").addEventListener("click", async ()=>{
+    const specialty = document.getElementById("t-spec").value.trim();
+    const bio = document.getElementById("t-bio").value.trim();
+    const price_egp = parseInt(document.getElementById("t-price").value) || 0;
+    const { error } = await sb.from("teachers").upsert({ id: state.user.id, specialty, bio, price_egp });
+    document.getElementById("t-result").innerHTML = error
+      ? `<div class="err">تعذّر الحفظ.</div>`
+      : `<div class="msg-ok">تم حفظ ملفك.</div>`;
+  });
+}
+
+/* ============================================================
+   طلبات الحجز — للمعلّم (رد) وولي الأمر (متابعة)
+   ============================================================ */
+async function renderMyRequests(body){
+  const isTeacher = state.profile.role === "teacher";
+  const query = sb.from("booking_requests")
+    .select("id, message, status, created_at, children(name), profiles!booking_requests_parent_id_fkey(full_name)")
+    .order("created_at", { ascending:false });
+
+  const { data: requests, error } = isTeacher
+    ? await query.eq("teacher_id", state.user.id)
+    : await query.eq("parent_id", state.user.id);
+
+  if (error){
+    body.innerHTML = `<div class="err">تعذّر تحميل الطلبات.</div>`;
+    return;
+  }
+  if (!requests || requests.length === 0){
+    body.innerHTML = `<div class="empty">${isTeacher ? "لسه معندكش طلبات حجز." : "لسه ماطلبتش أي حجز."}</div>`;
+    return;
+  }
+
+  const statusLabel = { pending:"بانتظار الرد", accepted:"تم القبول", declined:"تم الرفض" };
+
+  body.innerHTML = requests.map(r => `
+    <div class="req-row">
+      <div class="req-top">
+        <div>
+          <div class="child-name">${isTeacher ? esc(r.profiles?.full_name || "ولي أمر") : "لـ " + esc(r.children?.name || "طفل")}</div>
+          ${r.message ? `<div class="child-meta">${esc(r.message)}</div>` : ""}
+        </div>
+        <div class="status-pill status-${r.status}">${statusLabel[r.status]}</div>
+      </div>
+      ${isTeacher && r.status === 'pending' ? `
+        <div class="req-actions">
+          <button class="btn btn-primary btn-small" data-accept="${r.id}">قبول</button>
+          <button class="btn btn-outline btn-small" data-decline="${r.id}">رفض</button>
+        </div>
+      ` : ""}
+    </div>
+  `).join("");
+
+  document.querySelectorAll("[data-accept]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      await sb.from("booking_requests").update({status:"accepted"}).eq("id", btn.dataset.accept);
+      renderMyRequests(body);
+    });
+  });
+  document.querySelectorAll("[data-decline]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      await sb.from("booking_requests").update({status:"declined"}).eq("id", btn.dataset.decline);
+      renderMyRequests(body);
+    });
+  });
+}
+
+init();
+</script>
+</body>
+</html>
