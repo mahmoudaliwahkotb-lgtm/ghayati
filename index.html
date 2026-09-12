@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0C6B3E">
+<title>غايتي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1F2A4D; --soft:#5C6684; --faint:#8C93A8;
+  --bg:#F4F6FA; --surface:#fff; --line:#DDE2EC; --line2:#EEF1F7;
+  --em:#12874F; --em-d:#0C6B3E; --em-s:#E3F3EA; --plum:#2C3B6B; --plum-s:#E8ECF6;
+  --amber:#B4761E; --amber-s:#FAF0DF;
+  --r:16px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;
+  font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit}
+
+.app{display:grid;grid-template-columns:250px minmax(0,620px) 330px;gap:22px;
+  max-width:1240px;margin:0 auto;padding:0 16px;align-items:start}
+
+.nav{position:sticky;top:0;height:100vh;padding:16px 0;display:flex;flex-direction:column}
+.logo{font-family:Amiri,serif;font-size:31px;font-weight:700;color:var(--em-d);padding:0 12px 14px;display:flex;align-items:center;gap:9px}
+.logo em{font-style:normal;font-size:11px;font-family:"IBM Plex Sans Arabic";color:var(--faint);font-weight:400}
+.nav a.item{display:flex;align-items:center;gap:13px;padding:11px 13px;border-radius:12px;font-size:16px;
+  color:var(--ink);cursor:pointer;margin-bottom:2px}
+.nav a.item:hover{background:var(--line2)}
+.nav a.item.on{background:var(--em-s);color:var(--em-d);font-weight:600}
+.nav svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;flex:0 0 auto}
+.nav .cta{margin:14px 8px 0;background:var(--em);color:#fff;border:0;border-radius:14px;padding:13px;
+  font-size:15.5px;font-weight:600;cursor:pointer}
+.nav .cta:hover{background:var(--em-d)}
+.me{margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:13px;cursor:pointer}
+.me:hover{background:var(--line2)}
+.me b{font-size:14px;display:block;line-height:1.4}
+.me small{font-size:11.5px;color:var(--faint)}
+
+.col{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  margin:14px 0 40px;overflow:hidden;min-height:80vh}
+.chead{position:sticky;top:0;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);padding:13px 16px;display:flex;align-items:center;
+  justify-content:space-between;gap:12px;z-index:20}
+.chead h2{margin:0;font-size:18px;font-weight:600}
+
+.side{position:sticky;top:14px;padding:14px 0 40px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:15px;margin-bottom:13px}
+.box h3{margin:0 0 11px;font-size:15.5px;font-weight:600}
+.search{position:relative;margin-bottom:13px}
+.search input{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:14px;
+  padding:12px 42px 12px 14px;font-family:inherit;font-size:14.5px;color:var(--ink)}
+.search svg{position:absolute;right:14px;top:12px;width:19px;height:19px;stroke:var(--faint);fill:none;stroke-width:2}
+
+.row{display:flex;gap:11px}
+.av{width:44px;height:44px;border-radius:13px;background:var(--em-s);color:var(--em-d);display:grid;
+  place-items:center;font-family:Amiri,serif;font-size:20px;flex:0 0 auto;cursor:pointer}
+.av.p{background:var(--plum-s);color:var(--plum)}
+.av.a{background:var(--amber-s);color:var(--amber)}
+.av.sm{width:34px;height:34px;border-radius:10px;font-size:16px}
+
+.pill{display:inline-block;font-size:11.5px;padding:4px 10px;border-radius:20px;background:var(--em-s);color:var(--em-d)}
+.pill.p{background:var(--plum-s);color:var(--plum)}
+.btn{border:0;background:var(--em);color:#fff;font-weight:600;font-size:14.5px;padding:11px 18px;
+  border-radius:12px;cursor:pointer}
+.btn:hover{background:var(--em-d)}
+.btn.g{background:var(--surface);color:var(--ink);border:1px solid var(--line);font-weight:500}
+.btn.g:hover{background:var(--line2)}
+.btn.wide{width:100%}
+.muted{color:var(--soft)}
+.tiny{font-size:12.5px;color:var(--faint)}
+
+/* Auth */
+.auth-view{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:var(--bg)}
+.auth-box{background:var(--surface);border-radius:var(--r);padding:40px 32px;width:100%;max-width:400px;border:1px solid var(--line)}
+.auth-box h1{margin:0 0 12px;text-align:center;font-size:32px;font-family:Amiri,serif;color:var(--em-d)}
+.auth-box p{text-align:center;color:var(--soft);margin:0 0 28px}
+.auth-box input,.auth-box select{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;
+  font-family:inherit;font-size:15px;margin-bottom:12px}
+.auth-box input:focus,.auth-box select:focus{outline:none;border-color:var(--em)}
+.auth-btn{width:100%;padding:13px;background:var(--em);color:#fff;border:0;border-radius:10px;
+  font-weight:600;cursor:pointer;font-size:15px;margin-top:12px}
+.auth-err{background:#FDEDE9;color:#B3492E;padding:10px;border-radius:8px;margin-bottom:12px;font-size:13px}
+.auth-switch{text-align:center;margin-top:20px;font-size:13px;color:var(--soft)}
+.auth-switch a{color:var(--em-d);font-weight:600;cursor:pointer}
+
+/* Post */
+.post{border-bottom:1px solid var(--line);padding:16px 0}
+.post-h{display:flex;gap:11px}
+.post-bd{flex:1}
+.post-name{font-weight:600;font-size:14.5px}
+.post-role{font-size:12px;color:var(--soft)}
+.post-text{margin:8px 0;font-size:15px;line-height:1.7}
+
+/* Teachers/Market */
+.card{border-bottom:1px solid var(--line);padding:14px 0}
+.card-h{display:flex;justify-content:space-between;align-items:flex-start}
+.card-name{font-weight:600;font-size:15px}
+.card-spec{font-size:13px;color:var(--soft);margin-top:2px}
+.card-price{font-weight:700;color:var(--em-d);font-size:16px}
+.card-bio{font-size:14px;line-height:1.7;margin-top:10px;color:var(--ink)}
+.book-btn{margin-top:10px;width:100%}
+
+/* Children */
+.child-item{padding:12px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.child-info b{display:block;font-weight:600;font-size:14px;margin-bottom:2px}
+.child-info small{color:var(--soft);font-size:12px}
+
+/* Loading & Empty */
+.loading{text-align:center;padding:40px 20px;color:var(--soft)}
+.empty{text-align:center;padding:60px 20px;color:var(--soft);line-height:1.8}
+
+.mbar{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--line);
+  display:flex;justify-content:space-around;padding:8px 0;z-index:100}
+@media(max-width:900px){
+  .app{grid-template-columns:1fr}
+  .nav,.side{display:none}
+  .col{margin:80px 0 80px;min-height:auto}
+  .mbar{display:flex}
+  .mbar button{flex:1;border:0;background:0;padding:8px;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;gap:4px;color:var(--soft);cursor:pointer;font-size:10px;font-weight:600}
+  .mbar button svg{width:18px;height:18px}
+}
+
+.sheet-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.3);z-index:200}
+.sheet-overlay.on{display:block}
+.sheet{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-radius:28px 28px 0 0;
+  padding:20px;transform:translateY(100%);transition:transform .3s;z-index:201;max-height:80vh;overflow-y:auto}
+.sheet.on{transform:translateY(0)}
+.srow{padding:16px;border-bottom:1px solid var(--line);cursor:pointer;font-weight:500;font-size:15px;
+  display:flex;gap:12px;align-items:center}
+.srow:last-child{border:0}
+.srow:hover{background:var(--line2);border-radius:10px}
+</style>
+</head>
+<body>
+
+<div class="auth-view" id="auth-view" style="display:none">
+  <div class="auth-box">
+    <h1>غايتي</h1>
+    <p id="auth-subhead">سجّل حساب جديد</p>
+    
+    <div id="auth-error"></div>
+    
+    <div id="signup-form">
+      <label style="display:block;font-weight:600;margin-bottom:8px;font-size:13px">أنا</label>
+      <select id="role-select" style="margin-bottom:16px">
+        <option value="parent">ولي أمر</option>
+        <option value="teacher">معلّم</option>
+      </select>
+      
+      <input id="signup-name" type="text" placeholder="الاسم الكامل" required>
+      <input id="signup-phone" type="tel" placeholder="رقم الهاتف (اختياري)">
+      <input id="signup-email" type="email" placeholder="البريد الإلكتروني" required>
+      <input id="signup-pass" type="password" placeholder="كلمة السر (٦ أحرف على الأقل)" required>
+      <button class="auth-btn" onclick="handleSignup()">إنشاء الحساب</button>
+      
+      <div class="auth-switch">عندك حساب؟ <a onclick="switchMode('login')">سجّل دخول</a></div>
+    </div>
+    
+    <div id="login-form" style="display:none">
+      <input id="login-email" type="email" placeholder="البريد الإلكتروني" required>
+      <input id="login-pass" type="password" placeholder="كلمة السر" required>
+      <button class="auth-btn" onclick="handleLogin()">دخول</button>
+      
+      <div class="auth-switch">مفيش حساب؟ <a onclick="switchMode('signup')">أنشئ حساب</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="app" id="main-app" style="display:none">
+  <aside class="nav">
+    <div class="logo"><svg viewBox="0 0 26 26" style="width:26px;height:26px;flex:0 0 auto"><path d="M5 21L19 7" stroke="var(--em)" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M13.5 6.4h6.6v6.6" stroke="var(--em)" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="3" width="4" height="4" rx="1.2" fill="var(--em)"/></svg>غايتي</div>
+    
+    <a class="item on" data-view="home" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M4 11l8-6 8 6v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg><span>الرئيسية</span></a>
+    <a class="item" data-view="explore" onclick="go('explore')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span>استكشف</span></a>
+    <a class="item" data-view="family" id="family-item" onclick="go('family')"><svg viewBox="0 0 24 24"><path d="M4 19V6a2 2 0 0 1 2-2h8l6 6v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M14 4v6h6M8 14h7M8 17h5"/></svg><span>أولادي</span></a>
+    <a class="item" data-view="market" onclick="go('market')"><svg viewBox="0 0 24 24"><path d="M4 8h16l-1.2 11a2 2 0 0 1-2 1.8H7.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span>المعلّمون</span></a>
+    <a class="item" data-view="wallet" onclick="go('wallet')"><svg viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M19 11h2v4h-2a2 2 0 0 1 0-4z"/></svg><span>المحفظة</span></a>
+    <a class="item" data-view="me" onclick="go('me')"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.2-3.6 4-5.2 7-5.2s5.8 1.6 7 5.2"/></svg><span>تقدّمي</span></a>
+    
+    <button class="cta" onclick="go('session')">ابدأ جلسة</button>
+    
+    <div class="me" onclick="toggleRole()">
+      <div class="av sm" id="me-av">م</div>
+      <div><b id="me-name">محمود</b><small id="me-role">ولي أمر</small></div>
+    </div>
+  </aside>
+
+  <main class="col">
+    <div id="view"></div>
+  </main>
+
+  <aside class="side">
+    <div class="search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input placeholder="دوّر على معلّم أو موضوع">
+    </div>
+    <div class="box">
+      <h3>معلّمون موثّقون</h3>
+      <div id="sugg"></div>
+    </div>
+  </aside>
+</div>
+
+<nav class="mbar">
+  <button data-view="home" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M4 11l8-6 8 6v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg>الرئيسية</button>
+  <button data-view="market" onclick="go('market')"><svg viewBox="0 0 24 24"><path d="M4 8h16l-1.2 11a2 2 0 0 1-2 1.8H7.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>المعلّمون</button>
+  <button onclick="openSheet()"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>المزيد</button>
+</nav>
+
+<div class="sheet-overlay" id="sheet-overlay" onclick="closeSheet()"></div>
+<div class="sheet" id="sheet">
+  <div class="srow" onclick="goSheet('family')">أولادي</div>
+  <div class="srow" onclick="goSheet('wallet')">المحفظة</div>
+  <div class="srow" onclick="goSheet('me')">ملفي</div>
+  <div class="srow sw" onclick="closeSheet();toggleRole()" style="color:var(--em);font-weight:700">🔄 بدّل الدور</div>
+  <div class="srow sw" onclick="handleLogout()" style="color:#B3492E;font-weight:700">🚪 خروج</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://wmtdfkyyuxqigqldabzt.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtdGRma3l5dXhxaWdxbGRhYnp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkxNTIwNDMsImV4cCI6MjEwNDcyODA0M30.Xo--JumcGs75J7T7QZFFSC58YSecDx7SLVvCnokZkU8";
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let state = {
+  user: null,
+  profile: null,
+  currentRole: null,
+  view: "home",
+};
+
+const esc = s => (new DOMParser().parseFromString(s||"","text/html").body.textContent||"");
+const initials = n => (n||"؟").trim().charAt(0);
+
+async function init(){
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    const { data } = await sb.from("profiles").select("*").eq("id", session.user.id).single();
+    if (data) {
+      state.user = session.user;
+      state.profile = data;
+      state.currentRole = data.role;
+      showApp();
+      updateUI();
+      go("home");
+    }
+  } else {
+    showAuth();
+  }
+}
+
+function showAuth(){ 
+  document.getElementById("auth-view").style.display = "flex";
+  document.getElementById("main-app").style.display = "none";
+}
+function showApp(){
+  document.getElementById("auth-view").style.display = "none";
+  document.getElementById("main-app").style.display = "grid";
+}
+
+function switchMode(mode){
+  const err = document.getElementById("auth-error");
+  err.innerHTML = "";
+  if (mode === "login") {
+    document.getElementById("signup-form").style.display = "none";
+    document.getElementById("login-form").style.display = "block";
+    document.getElementById("auth-subhead").textContent = "سجّل الدخول";
+  } else {
+    document.getElementById("login-form").style.display = "none";
+    document.getElementById("signup-form").style.display = "block";
+    document.getElementById("auth-subhead").textContent = "أنشئ حساب جديد";
+  }
+}
+
+async function handleSignup(){
+  const name = document.getElementById("signup-name").value.trim();
+  const phone = document.getElementById("signup-phone").value.trim();
+  const email = document.getElementById("signup-email").value.trim();
+  const pass = document.getElementById("signup-pass").value;
+  const role = document.getElementById("role-select").value;
+  const err = document.getElementById("auth-error");
+  
+  if (!name || !email || !pass) {
+    err.innerHTML = `<div class="auth-err">من فضلك ملأ الحقول المطلوبة</div>`;
+    return;
+  }
+  
+  const { error } = await sb.auth.signUp({
+    email, password: pass,
+    options: { data: { full_name: name, role, phone } }
+  });
+  
+  if (error) {
+    err.innerHTML = `<div class="auth-err">خطأ: ${error.message}</div>`;
+  } else {
+    err.innerHTML = `<div style="background:#E3F3EA;color:#12874F;padding:10px;border-radius:8px">تم إنشاء الحساب! سجّل دخول الآن</div>`;
+    setTimeout(() => switchMode("login"), 1500);
+  }
+}
+
+async function handleLogin(){
+  const email = document.getElementById("login-email").value.trim();
+  const pass = document.getElementById("login-pass").value;
+  const err = document.getElementById("auth-error");
+  
+  if (!email || !pass) {
+    err.innerHTML = `<div class="auth-err">من فضلك أدخل البريد والكلمة</div>`;
+    return;
+  }
+  
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+  if (error) {
+    err.innerHTML = `<div class="auth-err">البريد أو الكلمة غير صحيحة</div>`;
+  } else {
+    const { data: profile } = await sb.from("profiles").select("*").eq("id", data.user.id).single();
+    state.user = data.user;
+    state.profile = profile;
+    state.currentRole = profile.role;
+    showApp();
+    updateUI();
+    go("home");
+  }
+}
+
+async function handleLogout(){
+  await sb.auth.signOut();
+  state = { user: null, profile: null, currentRole: null, view: "home" };
+  showAuth();
+}
+
+function updateUI(){
+  document.getElementById("me-av").textContent = initials(state.profile.full_name);
+  document.getElementById("me-name").textContent = state.profile.full_name;
+  document.getElementById("me-role").textContent = state.currentRole === "teacher" ? "معلّم" : "ولي أمر";
+  
+  document.getElementById("family-item").style.display = state.currentRole === "teacher" ? "none" : "flex";
+  
+  document.querySelectorAll(".nav a").forEach(a => a.classList.remove("on"));
+  document.querySelector(`[data-view="home"]`).classList.add("on");
+}
+
+function toggleRole(){
+  state.currentRole = state.currentRole === "teacher" ? "parent" : "teacher";
+  updateUI();
+  go("home");
+}
+
+function go(view){
+  state.view = view;
+  document.querySelectorAll(".nav a").forEach(a => a.classList.remove("on"));
+  document.querySelector(`[data-view="${view}"]`)?.classList.add("on");
+  
+  const viewEl = document.getElementById("view");
+  viewEl.innerHTML = `<div class="loading">جاري التحميل...</div>`;
+  
+  if (view === "home") renderHome(viewEl);
+  else if (view === "explore") renderExplore(viewEl);
+  else if (view === "family") renderFamily(viewEl);
+  else if (view === "market") renderMarket(viewEl);
+  else if (view === "wallet") renderWallet(viewEl);
+  else if (view === "me") renderMe(viewEl);
+  else if (view === "session") renderSession(viewEl);
+}
+
+async function renderHome(el){
+  const { data: posts, error } = await sb.from("posts")
+    .select("id, body, created_at, author_id, profiles(full_name, role)")
+    .eq("status", "published")
+    .order("created_at", { ascending:false })
+    .limit(30);
+  
+  let html = `
+    <div style="padding:16px 0">
+      <div style="display:flex;gap:11px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--line)">
+        <div class="av sm">${initials(state.profile.full_name)}</div>
+        <div style="flex:1">
+          <textarea id="post-text" placeholder="شنو آخر أخبارك؟" 
+            style="width:100%;border:1px solid var(--line);border-radius:10px;padding:10px;font-family:inherit;resize:none;height:60px"></textarea>
+          <button class="btn" style="margin-top:8px;width:auto" onclick="publishPost()">نشر</button>
+        </div>
+      </div>
+      ${!posts || posts.length === 0 ? `<div class="empty">لسه مفيش منشورات</div>` : ""}
+      ${(posts||[]).map(p => `
+        <div class="post">
+          <div class="post-h">
+            <div class="av sm">${initials(p.profiles?.full_name)}</div>
+            <div class="post-bd">
+              <div class="post-name">${esc(p.profiles?.full_name)}</div>
+              <div class="post-role">${p.profiles?.role === "teacher" ? "معلّم" : "ولي أمر"}</div>
+              <div class="post-text">${esc(p.body)}</div>
+            </div>
+          </div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+  el.innerHTML = html;
+}
+
+async function publishPost(){
+  const text = document.getElementById("post-text")?.value.trim();
+  if (!text) return;
+  await sb.from("posts").insert({ author_id: state.user.id, body: text, status: "published" });
+  renderHome(document.getElementById("view"));
+}
+
+async function renderExplore(el){
+  const { data: teachers } = await sb.from("teachers")
+    .select("id, specialty, bio, price_egp, verified, profiles(full_name)")
+    .order("verified", { ascending: false })
+    .limit(20);
+  
+  el.innerHTML = `<div style="padding:16px 0">
+    <h2 style="margin-bottom:20px">استكشف المعلّمين</h2>
+    ${(!teachers || teachers.length === 0) ? `<div class="empty">لسه مفيش معلّمين</div>` : ""}
+    ${(teachers||[]).map(t => `
+      <div class="card">
+        <div class="card-h">
+          <div>
+            <div class="card-name">${esc(t.profiles?.full_name)}</div>
+            <div class="card-spec">${esc(t.specialty||"—")}</div>
+            ${t.verified ? `<div class="pill" style="margin-top:6px">✓ موثّق</div>` : ""}
+          </div>
+          <div class="card-price">${t.price_egp ? t.price_egp + " ج.م" : "—"}</div>
+        </div>
+        ${t.bio ? `<div class="card-bio">${esc(t.bio)}</div>` : ""}
+        <button class="btn book-btn" onclick="bookTeacher('${t.id}')">اطلب حجز</button>
+      </div>
+    `).join("")}
+  </div>`;
+}
+
+async function bookTeacher(teacherId){
+  const { data: children } = await sb.from("children").select("id, name").eq("parent_id", state.user.id);
+  if (!children || children.length === 0) {
+    alert("من فضلك أضف طفل من تبويب أولادي أول");
+    go("family");
+    return;
+  }
+  const childId = children[0].id;
+  await sb.from("booking_requests").insert({
+    parent_id: state.user.id,
+    teacher_id: teacherId,
+    child_id: childId
+  });
+  alert("تم إرسال طلب الحجز!");
+}
+
+async function renderFamily(el){
+  const { data: children } = await sb.from("children").select("*").eq("parent_id", state.user.id);
+  
+  el.innerHTML = `<div style="padding:16px 0">
+    <h2 style="margin-bottom:20px">أولادي</h2>
+    <input id="child-name" placeholder="اسم الطفل" style="width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px">
+    <input id="child-year" type="number" placeholder="سنة الميلاد" style="width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px">
+    <button class="btn" style="width:100%" onclick="addChild()">إضافة</button>
+    ${(!children || children.length === 0) ? `<div class="empty" style="margin-top:20px">لسه ماضفتش أولاد</div>` : ""}
+    ${(children||[]).map(c => `
+      <div class="child-item">
+        <div class="child-info">
+          <b>${esc(c.name)}</b>
+          <small>${c.birth_year ? "مواليد " + c.birth_year : ""}</small>
+        </div>
+      </div>
+    `).join("")}
+  </div>`;
+}
+
+async function addChild(){
+  const name = document.getElementById("child-name")?.value.trim();
+  const year = parseInt(document.getElementById("child-year")?.value) || null;
+  if (!name) return;
+  await sb.from("children").insert({ parent_id: state.user.id, name, birth_year: year });
+  renderFamily(document.getElementById("view"));
+}
+
+async function renderMarket(el){
+  const { data: teachers } = await sb.from("teachers")
+    .select("id, specialty, bio, price_egp, verified, profiles(full_name)")
+    .order("verified", { ascending: false });
+  
+  el.innerHTML = `<div style="padding:16px 0">
+    <h2 style="margin-bottom:20px">المعلّمون</h2>
+    ${(!teachers || teachers.length === 0) ? `<div class="empty">لسه مفيش معلّمين</div>` : ""}
+    ${(teachers||[]).map(t => `
+      <div class="card">
+        <div class="card-h">
+          <div>
+            <div class="card-name">${esc(t.profiles?.full_name)}</div>
+            <div class="card-spec">${esc(t.specialty||"—")}</div>
+            ${t.verified ? `<div class="pill" style="margin-top:6px">✓ موثّق</div>` : ""}
+          </div>
+          <div class="card-price">${t.price_egp ? t.price_egp + " ج.م" : "—"}</div>
+        </div>
+        ${t.bio ? `<div class="card-bio">${esc(t.bio)}</div>` : ""}
+        <button class="btn book-btn" onclick="bookTeacher('${t.id}')">اطلب حجز</button>
+      </div>
+    `).join("")}
+  </div>`;
+}
+
+async function renderWallet(el){
+  const role = state.currentRole;
+  const { data: requests } = role === "teacher"
+    ? await sb.from("booking_requests").select("*").eq("teacher_id", state.user.id)
+    : await sb.from("booking_requests").select("*").eq("parent_id", state.user.id);
+  
+  el.innerHTML = `<div style="padding:16px 0">
+    <h2 style="margin-bottom:20px">المحفظة والحجوزات</h2>
+    ${(!requests || requests.length === 0) ? `<div class="empty">لسه مفيش حجوزات</div>` : ""}
+    ${(requests||[]).map(r => `
+      <div style="padding:12px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;font-weight:600">
+          <span>${r.status === "pending" ? "بانتظار الرد" : r.status === "accepted" ? "تم القبول" : "تم الرفض"}</span>
+        </div>
+        ${role === "teacher" && r.status === "pending" ? `
+          <button class="btn" style="width:100%;margin-top:8px;font-size:13px" onclick="updateRequest('${r.id}', 'accepted')">قبول</button>
+          <button class="btn g" style="width:100%;margin-top:4px;font-size:13px" onclick="updateRequest('${r.id}', 'declined')">رفض</button>
+        ` : ""}
+      </div>
+    `).join("")}
+  </div>`;
+}
+
+async function updateRequest(id, status){
+  await sb.from("booking_requests").update({ status }).eq("id", id);
+  renderWallet(document.getElementById("view"));
+}
+
+async function renderMe(el){
+  const isTeacher = state.currentRole === "teacher";
+  if (!isTeacher) {
+    const { data: children } = await sb.from("children").select("*").eq("parent_id", state.user.id);
+    el.innerHTML = `<div style="padding:16px 0"><h2>ملفي</h2><p>الاسم: ${esc(state.profile.full_name)}</p><p>الرقم: ${esc(state.profile.phone || "—")}</p></div>`;
+    return;
+  }
+  
+  const { data: teacher } = await sb.from("teachers").select("*").eq("id", state.user.id).single();
+  el.innerHTML = `<div style="padding:16px 0">
+    <h2 style="margin-bottom:20px">ملفي</h2>
+    <label style="display:block;font-weight:600;margin:12px 0 6px">التخصص</label>
+    <input id="t-spec" value="${esc(teacher?.specialty||"")}" style="width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;margin-bottom:12px">
+    <label style="display:block;font-weight:600;margin:12px 0 6px">عن نفسك</label>
+    <textarea id="t-bio" style="width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;min-height:80px;margin-bottom:12px">${esc(teacher?.bio||"")}</textarea>
+    <label style="display:block;font-weight:600;margin:12px 0 6px">السعر (ج.م)</label>
+    <input id="t-price" type="number" value="${teacher?.price_egp||""}" style="width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;margin-bottom:12px">
+    <button class="btn" style="width:100%" onclick="saveTeacherProfile()">حفظ</button>
+  </div>`;
+}
+
+async function saveTeacherProfile(){
+  const spec = document.getElementById("t-spec")?.value.trim();
+  const bio = document.getElementById("t-bio")?.value.trim();
+  const price = parseInt(document.getElementById("t-price")?.value) || 0;
+  await sb.from("teachers").upsert({ id: state.user.id, specialty: spec, bio, price_egp: price });
+  alert("تم الحفظ!");
+}
+
+async function renderSession(el){
+  el.innerHTML = `<div class="empty" style="margin-top:60px">قريباً: نظام الجلسات المباشرة</div>`;
+}
+
+function openSheet(){
+  document.getElementById("sheet-overlay").classList.add("on");
+  document.getElementById("sheet").classList.add("on");
+}
+function closeSheet(){
+  document.getElementById("sheet-overlay").classList.remove("on");
+  document.getElementById("sheet").classList.remove("on");
+}
+function goSheet(view){
+  closeSheet();
+  go(view);
+}
+
+init();
+</script>
+</body>
+</html>
