@@ -1,6 +1,0 @@
-{
-  "name": "غايتي - اختيار المعلم الأنسب لطفلك",
-  "description": "منصة تعليمية رائدة لاختيار المعلم المعتمد الأنسب لطفلك في القرآن واللغة العربية والإنجليزية والرياضيات مع جلسة تجريبية مجانية.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
